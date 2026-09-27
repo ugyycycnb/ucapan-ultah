@@ -43,7 +43,7 @@
   #confetti-canvas{position:fixed;inset:0;z-index:20;pointer-events:none;}
 
   .stage{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:14px;padding:24px;text-align:center;z-index:5;transition:opacity .5s ease;transform-style:preserve-3d;}
+    gap:14px;padding:24px;text-align:center;z-index:5;transition:opacity .5s ease;}
   .hidden{opacity:0;pointer-events:none;}
 
   /* ---------- Stage 1: Envelope ---------- */
@@ -86,16 +86,26 @@
   @media (max-width:480px){.gif-sticker{width:56px;height:56px;}}
 
   /* ---------- Stage 2: Letter ---------- */
-  #letter-paper{width:min(88vw,420px);max-height:78vh;overflow-y:auto;position:relative;
+  #letter-paper{width:min(88vw,420px);max-height:66vh;overflow-y:auto;position:relative;
     background:linear-gradient(180deg,var(--paper),var(--cream));
     color:var(--ink);border-radius:10px;padding:34px 28px;
-    box-shadow:0 28px 70px rgba(0,0,0,.5);cursor:pointer;transform-style:preserve-3d;}
+    box-shadow:0 28px 70px rgba(0,0,0,.5);
+    -webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;}
   .letter-corner{position:absolute;top:-18px;right:18px;width:44px;height:44px;color:var(--caramel);
     filter:drop-shadow(0 6px 8px rgba(0,0,0,.3));animation:swayCat 2.6s ease-in-out infinite;}
   @keyframes swayCat{0%,100%{transform:rotate(-6deg);}50%{transform:rotate(6deg);}}
   .salutation{font-family:'Caveat',cursive;font-weight:700;font-size:1.9rem;color:var(--plum);margin-bottom:14px;text-align:left;}
   #letter-text{white-space:pre-line;text-align:left;line-height:1.7;font-size:.98rem;font-weight:500;}
-  .hint{position:absolute;bottom:8px;right:14px;font-size:.68rem;color:var(--plum);opacity:.55;}
+  .next-btn{font-family:'Fredoka',sans-serif;font-size:.85rem;color:var(--dusk);background:var(--gold);
+    border:none;padding:11px 24px;border-radius:999px;cursor:pointer;
+    box-shadow:0 10px 20px rgba(0,0,0,.35);animation:pulse 1.8s ease-in-out infinite;
+    -webkit-tap-highlight-color:transparent;}
+  .next-btn:active{transform:scale(.96);}
+  @media (max-width:480px){
+    .letter-corner{width:34px;height:34px;top:-12px;right:10px;}
+    .salutation{font-size:1.55rem;margin-bottom:10px;}
+    #letter-paper{padding:28px 20px 20px;max-height:60vh;}
+  }
 
   /* ---------- Stage 3: feed game ---------- */
   #feed-game{display:flex;flex-direction:column;align-items:center;gap:8px;}
