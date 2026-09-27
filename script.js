@@ -49,21 +49,18 @@ for(let i=0;i<14;i++){
   bubbleWrap.appendChild(b);
 }
 
-/* ---------- 3D parallax: stickers + envelope + letter tilt toward cursor ---------- */
+/* ---------- 3D parallax: stickers + envelope tilt toward cursor (desktop/mouse only) ---------- */
 const stickers = document.querySelectorAll('.sticker, .gif-sticker');
 const envelope = document.getElementById('envelope');
-const letterPaperEl = document.getElementById('letter-paper');
+const finePointer = window.matchMedia('(pointer: fine)').matches;
 window.addEventListener('pointermove', (e)=>{
   const px = e.clientX/innerWidth - 0.5, py = e.clientY/innerHeight - 0.5;
   stickers.forEach(s=>{
     const depth = parseFloat(s.dataset.depth)||0.4;
     s.style.transform = `translate3d(${-px*40*depth}px, ${-py*40*depth}px, 0) rotate(${px*10*depth}deg)`;
   });
-  if(envelope && !envelope.classList.contains('open')){
+  if(finePointer && envelope && !envelope.classList.contains('open')){
     envelope.style.transform = `rotateY(${px*18}deg) rotateX(${-py*18}deg)`;
-  }
-  if(letterPaperEl && !stageLetter.classList.contains('hidden')){
-    letterPaperEl.style.transform = `rotateY(${px*8}deg) rotateX(${-py*8}deg)`;
   }
 });
 
@@ -202,17 +199,19 @@ function startTyping(){
   typeTimer=setInterval(()=>{
     letterText.textContent+=text[i]; i++;
     if(i%18===0){ const r=rect(); spawnHeart(r.left+r.width*Math.random(), r.top+20); }
-    if(i>=text.length){ clearInterval(typeTimer); typing=false; setTimeout(closeLetter,2200); }
+    if(i>=text.length){ clearInterval(typeTimer); typing=false; }
   },30);
 }
 
-letterPaper.addEventListener('click',()=>{
+const letterNextBtn = document.getElementById('letter-next-btn');
+letterNextBtn.addEventListener('click',()=>{
   if(typing){
     clearInterval(typeTimer);
     letterText.textContent=config.message;
     typing=false;
-    setTimeout(closeLetter,1200);
+    return; // biarkan orang baca dulu, baru tap lagi buat lanjut
   }
+  closeLetter();
 });
 
 function closeLetter(){
